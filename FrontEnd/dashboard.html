@@ -1,0 +1,50 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Surveillance Dashboard</title>
+  <link rel="stylesheet" href="./style/style.css">
+  <script defer src="./script/alerts.js"></script>
+</head>
+
+<body>
+  <header class="nav-header">
+    <h1>Surveillance Dashboard</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero" style="height: auto; background: none;">
+    <div class="hero-overlay" style="background-color: #1f4037; width: 100%; padding: 1rem;">
+      <h2>Live CCTV Feed</h2>
+      <p>Real-time AI-powered surveillance system</p>
+    </div>
+  </section>
+
+  <section class="info-section" style="flex-direction: column; align-items: center;">
+    <div class="card" style="width: 90%; max-width: 900px;">
+      <video id="cctvVideo" width="100%" autoplay muted loop>
+        <source src="./assets/videos/sample_feed.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <div class="card" style="width: 90%; max-width: 900px; background-color: #fff3cd; color: #856404; position: relative;">
+      <h3>ALERTS</h3>
+      <div id="alertContainer"></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 AI Railway Safety System | Dashboard for Station Monitoring</p>
+  </footer>
+</body>
+
+</html>
