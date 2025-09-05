@@ -1,50 +1,313 @@
-<!-- dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Surveillance Dashboard</title>
+  <title>Railway Safety AI Dashboard</title>
   <link rel="stylesheet" href="./style/style.css">
-  <script defer src="./script/alerts.js"></script>
+  <link rel="stylesheet" href="./style/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script defer src="./scripts/dashboard.js"></script>
+  <script defer src="./scripts/alerts.js"></script>
 </head>
 
 <body>
   <header class="nav-header">
-    <h1>Surveillance Dashboard</h1>
+    <div class="header-left">
+      <h1>🚄 Railway Safety AI</h1>
+      <span class="status-indicator online">System Online</span>
+    </div>
     <nav>
       <a href="index.html">Home</a>
-      <a href="dashboard.html">Dashboard</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
     </nav>
   </header>
 
-  <section class="hero" style="height: auto; background: none;">
-    <div class="hero-overlay" style="background-color: #1f4037; width: 100%; padding: 1rem;">
-      <h2>Live CCTV Feed</h2>
-      <p>Real-time AI-powered surveillance system</p>
-    </div>
-  </section>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>Quick Actions</h3>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#overview" class="nav-item active">
+          <span class="icon">📊</span>
+          Overview
+        </a>
+        <a href="#cctv" class="nav-item">
+          <span class="icon">📹</span>
+          CCTV Monitoring
+        </a>
+        <a href="#alerts" class="nav-item">
+          <span class="icon">🚨</span>
+          Alerts
+        </a>
+        <a href="#analytics" class="nav-item">
+          <span class="icon">📈</span>
+          Analytics
+        </a>
+        <a href="#crowd" class="nav-item">
+          <span class="icon">👥</span>
+          Crowd Management
+        </a>
+      </nav>
+    </aside>
 
-  <section class="info-section" style="flex-direction: column; align-items: center;">
-    <div class="card" style="width: 90%; max-width: 900px;">
-      <video id="cctvVideo" width="100%" autoplay muted loop>
-        <source src="./assets/videos/sample_feed.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Overview Section -->
+      <section id="overview" class="dashboard-section active">
+        <div class="section-header">
+          <h2>System Overview</h2>
+          <p>Real-time monitoring and AI-powered surveillance</p>
+        </div>
 
-    <div class="card" style="width: 90%; max-width: 900px; background-color: #fff3cd; color: #856404; position: relative;">
-      <h3>ALERTS</h3>
-      <div id="alertContainer"></div>
-    </div>
-  </section>
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📹</div>
+            <div class="stat-content">
+              <h3>Active Cameras</h3>
+              <p class="stat-number">24</p>
+              <span class="stat-status online">All Operational</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🚨</div>
+            <div class="stat-content">
+              <h3>Active Alerts</h3>
+              <p class="stat-number" id="activeAlertsCount">3</p>
+              <span class="stat-status warning">Requires Attention</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-content">
+              <h3>Crowd Density</h3>
+              <p class="stat-number" id="crowdDensity">Medium</p>
+              <span class="stat-status normal">Normal</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-content">
+              <h3>Response Time</h3>
+              <p class="stat-number">2.3s</p>
+              <span class="stat-status online">Excellent</span>
+            </div>
+          </div>
+        </div>
 
-  <footer>
-    <p>&copy; 2025 AI Railway Safety System | Dashboard for Station Monitoring</p>
-  </footer>
+        <!-- Real-time Charts -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3>Incident Trends (24h)</h3>
+            <canvas id="incidentChart" width="400" height="200"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Crowd Flow Analysis</h3>
+            <canvas id="crowdChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- CCTV Monitoring Section -->
+      <section id="cctv" class="dashboard-section">
+        <div class="section-header">
+          <h2>CCTV Monitoring</h2>
+          <p>Live surveillance feeds with AI detection</p>
+        </div>
+
+        <div class="cctv-grid">
+          <div class="cctv-feed main-feed">
+            <div class="feed-header">
+              <h3>Main Platform Camera 1</h3>
+              <div class="feed-controls">
+                <button class="btn btn-primary" onclick="startDetection('emotion')">Emotion Detection</button>
+                <button class="btn btn-warning" onclick="startDetection('violence')">Violence Detection</button>
+                <button class="btn btn-danger" onclick="startDetection('weapon')">Weapon Detection</button>
+              </div>
+            </div>
+            <div class="video-container">
+              <video id="mainCCTV" autoplay muted loop>
+                <source src="./assets/videos/sample_feed.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <div class="detection-overlay" id="detectionOverlay">
+                <div class="detection-status">AI Detection Active</div>
+              </div>
+            </div>
+            <div class="detection-results" id="detectionResults">
+              <div class="result-item">
+                <span class="label">Status:</span>
+                <span class="value" id="detectionStatus">Monitoring...</span>
+              </div>
+              <div class="result-item">
+                <span class="label">Confidence:</span>
+                <span class="value" id="detectionConfidence">--</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cctv-sidebar">
+            <div class="mini-feed">
+              <h4>Platform Camera 2</h4>
+              <video autoplay muted loop>
+                <source src="./assets/videos/sample_feed.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="mini-feed">
+              <h4>Entry Gate Camera</h4>
+              <video autoplay muted loop>
+                <source src="./assets/videos/sample_feed.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="mini-feed">
+              <h4>Exit Gate Camera</h4>
+              <video autoplay muted loop>
+                <source src="./assets/videos/sample_feed.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Alerts Section -->
+      <section id="alerts" class="dashboard-section">
+        <div class="section-header">
+          <h2>Security Alerts</h2>
+          <p>Real-time security notifications and incident reports</p>
+        </div>
+
+        <div class="alerts-container">
+          <div class="alert-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="high">High Priority</button>
+            <button class="filter-btn" data-filter="medium">Medium Priority</button>
+            <button class="filter-btn" data-filter="low">Low Priority</button>
+          </div>
+
+          <div class="alerts-list" id="alertsList">
+            <!-- Alerts will be populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Analytics Section -->
+      <section id="analytics" class="dashboard-section">
+        <div class="section-header">
+          <h2>Analytics & Reports</h2>
+          <p>Comprehensive analysis and insights</p>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <h3>Detection Accuracy</h3>
+            <div class="accuracy-metrics">
+              <div class="metric">
+                <span class="metric-label">Emotion Detection</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 94%"></div>
+                </div>
+                <span class="metric-value">94%</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Violence Detection</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 89%"></div>
+                </div>
+                <span class="metric-value">89%</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Weapon Detection</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 92%"></div>
+                </div>
+                <span class="metric-value">92%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Performance Metrics</h3>
+            <canvas id="performanceChart" width="400" height="300"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Crowd Management Section -->
+      <section id="crowd" class="dashboard-section">
+        <div class="section-header">
+          <h2>Crowd Management</h2>
+          <p>Real-time crowd density monitoring and analysis</p>
+        </div>
+
+        <div class="crowd-grid">
+          <div class="crowd-map">
+            <h3>Station Heat Map</h3>
+            <div class="heatmap-container" id="heatmapContainer">
+              <!-- Heatmap will be generated here -->
+            </div>
+          </div>
+
+          <div class="crowd-stats">
+            <h3>Crowd Statistics</h3>
+            <div class="crowd-metrics">
+              <div class="crowd-metric">
+                <span class="metric-label">Current Density</span>
+                <span class="metric-value" id="currentDensity">Medium</span>
+              </div>
+              <div class="crowd-metric">
+                <span class="metric-label">Peak Hours</span>
+                <span class="metric-value">8:00 AM - 10:00 AM</span>
+              </div>
+              <div class="crowd-metric">
+                <span class="metric-label">Safety Level</span>
+                <span class="metric-value safe">Safe</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Alert Modal -->
+  <div id="alertModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Security Alert</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="alert-details">
+          <div class="alert-type high">High Priority Alert</div>
+          <p class="alert-description">Suspicious activity detected in Platform 1</p>
+          <div class="alert-meta">
+            <span><strong>Time:</strong> <span id="alertTime"></span></span>
+            <span><strong>Location:</strong> <span id="alertLocation"></span></span>
+            <span><strong>Confidence:</strong> <span id="alertConfidence"></span></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary">Acknowledge</button>
+        <button class="btn btn-secondary">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize dashboard functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeDashboard();
+      initializeCharts();
+      loadSampleAlerts();
+    });
+  </script>
 </body>
 
 </html>
